@@ -17,8 +17,19 @@
         #app { display: none; flex: 1; flex-direction: column; }
         
         /* 再生中タブ用プレイヤー */
-        #player-container { flex: 1; background: #000; display: none; }
-        #player-container.active { display: block; }
+        /* ✅ 動画の「枠」を常に存在させる設定！！ */
+#player-container { 
+    flex: 1; 
+    background: #000; 
+    display: block; /* 常に「ブロック（存在）」として扱う！！ */
+    height: 0;      /* 最初は高さを0にして隠す */
+    overflow: hidden; 
+}
+
+/* 📺 「再生中ｗ」タブが押された時だけ、画面いっぱいに広げる！！ */
+#player-container.active { 
+    height: 100%; 
+}
         iframe { width: 100%; height: 100%; border: none; }
 
         /* 検索結果タブ用リスト */
@@ -101,21 +112,30 @@
         document.getElementById('tab-p').classList.toggle('active', type === 'p');
     }
 
-    // 検索＆自動ジャンプ機能！！
-  // 【真・検索機能】タブから一歩も出さない完結型！！
+    // ✅ 【パーツ1：真・検索機能ｗ】枠の中に検索結果を召喚する！！
 function runSearch() {
-    const q = document.getElementById('query').value;
+    const q = document.getElementById('query').value.trim();
     if (!q) return;
 
     const player = document.getElementById('main-player');
     
-    // 検索ワードをURL専用に変換（encodeURIComponent）し、
-    // 埋め込み専用の検索（listType=search）を、あなたの枠（player）に直接ブチ込む！！
-    player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(q)}&autoplay=1&rel=0&modestbranding=1`;
-    
-    // 【重要】タブ移動（switchTab）はあえて書かない！！
-    // これで画面はそのまま、下の「枠」の中身だけが爆速で検索結果に変わる！！
+    // 埋め込みプレイヤーではなく、YouTubeの検索画面そのものを「枠内」にブチ込む！！
+    // これで「外のサイトへの移動」を1ミリの妥協もなく封じ込めるんだ！！
+    player.src = `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}&embeddable=1`;
 }
+
+// ✅ 【パーツ2：自動監視ジャンプ】クリックを察知してタブを切り替える！！
+// 1秒ごとに「動画が選ばれたか？」をパトロールさせるド根性システムだ！！
+setInterval(() => {
+    const player = document.getElementById('main-player');
+    const tabP = document.getElementById('tab-p');
+
+    // 「枠内のURLが動画再生に変わった」かつ「まだ再生タブにいない」とき発動！！
+    if (player.src.includes('watch?v=') && !tabP.classList.contains('active')) {
+        // 1ミリの狂いもなく「再生中タブ」へシュバッ！！と自動ジャンプ！！
+        switchTab('p');
+    }
+}, 1000);
 </script>
 
 </body>
