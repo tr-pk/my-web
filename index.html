@@ -73,14 +73,28 @@
         document.getElementById('tab-p').classList.toggle('active', type === 'p');
     }
 
+    // ✅ 【修正版】検索しても勝手に飛ばない、賢い検索機能！！
     function runSearch() {
         const q = document.getElementById('query').value.trim();
         if (!q) return;
         const player = document.getElementById('main-player');
-        // ✅ 「再生できないｗ」を回避するフルパラメータ！！
+        
+        // 1枚のタブの中に「検索結果リスト」をドヤ顔で表示させる！！
         player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(q)}&origin=${window.location.origin}`;
-        switchTab('p');
+        
+        // ここで switchTab('p') を呼ばないのが「1ミリの妥協もない正解ｗ」だ！！
     }
+
+    // ✅ 【深夜のパトロール隊ｗ】動画がクリックされた瞬間を検知して自動ジャンプ！！
+    setInterval(() => {
+        const player = document.getElementById('main-player');
+        const tabP = document.getElementById('tab-p');
+
+        // 枠内のURLが「watch（再生開始）」に変わった瞬間を、4万円のThinkPadでキャッチせよ！！
+        if (player.src.includes('watch') && !tabP.classList.contains('active')) {
+            switchTab('p'); // ついに動画が始まった！！ ここで初めてジャンプ！！ｗ
+        }
+    }, 1000);
 
     // エンターキー対応
     document.getElementById('pass').addEventListener('keypress', (e) => { if (e.key === 'Enter') unlock(); });
