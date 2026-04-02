@@ -2,104 +2,49 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>youtube clone ver1.0 - FINAL</title>
+    <title>3号機 - SIMPLE ONE BOARD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* ✅ 復活！ 1ミリの狂いもないデザイン設定！！ */
+        /* 1ミリの妥協もない漆黒のデザインｗ */
         body { background: #000; color: #fff; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        #lock-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #app { display: none; flex: 1; flex-direction: column; }
         
-        #player-container { flex: 1; background: #000; display: none; height: 100%; }
-        #player-container.active { display: block; }
+        /* 検索エリア：常に一番上ｗ */
+        .search-bar { padding: 15px; background: #1a1a1a; display: flex; gap: 10px; border-bottom: 1px solid #333; }
+        input#query { flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 5px; font-size: 16px; }
+        button { background: #f00; border: none; color: #fff; padding: 0 20px; border-radius: 5px; cursor: pointer; }
+
+        /* メインエリア：検索結果も動画もここに全部出す！！ｗ */
+        #main-view { flex: 1; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
-
-        #search-container { flex: 1; overflow-y: auto; display: none; padding: 10px; }
-        #search-container.active { display: block; }
-        .search-bar { display: flex; padding: 10px; background: #1a1a1a; position: sticky; top: 0; z-index: 10; }
-        #query { flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 5px; }
-
-        /* ✅ 下部ボタンの復活！！ */
-        .nav { height: 70px; background: #1a1a1a; border-top: 1px solid #333; display: flex; }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #888; font-size: 14px; }
-        .nav-item.active { color: #f00; background: #222; }
     </style>
 </head>
 <body>
 
-<div id="lock-screen">
-    <h2 id="msg">ACCESS CODE REQUIRED</h2>
-    <input type="password" id="pass" placeholder="Password" style="padding:15px; background:#1a1a1a; border:1px solid #333; color:#fff; border-radius:10px; text-align:center;">
-    <button onclick="unlock()" style="margin-top:20px; padding:10px 40px; background:#f00; color:#fff; border:none; border-radius:5px; cursor:pointer;">UNLOCK</button>
-</div>
-
-<div id="app">
-    <div id="search-container" class="active">
-        <div class="search-bar">
-            <input type="text" id="query" placeholder="YouTube検索（LiveもOK）">
-            <button onclick="runSearch()" style="background:#f00; border:none; color:#fff; padding:0 15px; border-radius:0 5px 5px 0; cursor:pointer;">🔍</button>
-        </div>
-        <div id="results" style="padding:20px; text-align:center; color:#555;">
-            <p>↑の検索窓で動画を探してね！</p>
-        </div>
+    <div class="search-bar">
+        <input type="text" id="query" placeholder="YouTube検索ワードを入れてEnter" 
+               onkeydown="if(event.key==='Enter'){runSearch(); return false;}">
+        <button onclick="runSearch()">🔍</button>
     </div>
 
-    <div id="player-container">
-        <iframe id="main-player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div id="main-view">
+        <iframe id="player" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
-
-    <div class="nav">
-        <div id="tab-s" class="nav-item active" onclick="switchTab('s')">🔍 検索</div>
-        <div id="tab-p" class="nav-item" onclick="switchTab('p')">📺 再生中</div>
-    </div>
-</div>
 
 <script>
-    function unlock() {
-        const p = document.getElementById('pass').value;
-        if (p === "0000") {
-            document.getElementById('lock-screen').style.display = 'none';
-            document.getElementById('app').style.display = 'flex';
-        } else {
-            document.getElementById('msg').innerText = "ドンマイｗ 帰れｗ";
-            document.getElementById('msg').style.color = "red";
-        }
-    }
-
-    function switchTab(type) {
-        document.getElementById('search-container').classList.toggle('active', type === 's');
-        document.getElementById('player-container').classList.toggle('active', type === 'p');
-        document.getElementById('tab-s').classList.toggle('active', type === 's');
-        document.getElementById('tab-p').classList.toggle('active', type === 'p');
-    }
-
-    // ✅ 【修正版】エンターで検索するが、タブは切り替えない！！
     function runSearch() {
         const q = document.getElementById('query').value.trim();
         if (!q) return;
-        const player = document.getElementById('main-player');
+
+        const player = document.getElementById('player');
         
-        // 1. 検索結果をiframeに流し込む（これだけで検索は実行されるｗ）
+        // 🚀 YouTubeの検索結果をそのまま枠内に流し込む！！
+        // 埋め込み可能な検索結果を表示する、1ミリの狂いもない公式パラメータだ！！
         player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(q)}&origin=${window.location.origin}`;
-        
-        // ❌ 【重要】ここにあった switchTab('p'); を完全に消去！！
-        // これを消せば、エンターを押しても「検索タブｗ」のままリストが表示されます！！
     }
 
-    // ✅ 【深夜のパトロール隊ｗ】動画がクリックされた瞬間を検知して自動ジャンプ！！
-    setInterval(() => {
-        const player = document.getElementById('main-player');
-        const tabP = document.getElementById('tab-p');
-
-        // 枠内のURLが「watch（再生開始）」に変わった瞬間を、4万円のThinkPadでキャッチせよ！！
-        if (player.src.includes('watch') && !tabP.classList.contains('active')) {
-            switchTab('p'); // ついに動画が始まった！！ ここで初めてジャンプ！！ｗ
-        }
-    }, 1000);
-
-    // エンターキー対応
-    document.getElementById('pass').addEventListener('keypress', (e) => { if (e.key === 'Enter') unlock(); });
-    document.getElementById('query').addEventListener('keypress', (e) => { if (e.key === 'Enter') runSearch(); });
+    // 起動時に軽くフォーカスを合わせるｗ
+    window.onload = () => { document.getElementById('query').focus(); };
 </script>
+
 </body>
 </html>
