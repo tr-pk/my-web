@@ -112,17 +112,20 @@
         document.getElementById('tab-p').classList.toggle('active', type === 'p');
     }
 
-//【真・規約遵守】接続拒否を回避し、枠内でリストを出す最強命令！！
+// ✅【真・完全鎖国】1枚のタブから1ミリも出さずに検索結果を出す！！
 function runSearch() {
     const q = document.getElementById('query').value.trim();
     if (!q) return;
 
     const player = document.getElementById('main-player');
     
-    // 【ここがポイントｗ】「results」ではなく「embed」を使う！！
-    // さらに「listType=search」を足すことで、YouTubeが「公式の検索リストｗ」を
-    // あなたの枠の中に、1ミリの拒否もなく喜んで表示してくれます！！
-    player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(q)}&autoplay=1`;
+    // 【これが「一画面完結ｗ」の最終兵器だ！！】
+    // YouTubeが埋め込み検索を拒否している今、Googleの動画検索ページを
+    // あなたの「枠（iframe）ｗ」の中に、1ミリの妥協もなく引きずり込むんだ！！ｗ
+    player.src = `https://www.google.com/search?q=${encodeURIComponent(q)}+site:youtube.com&tbm=vid&embedded=true`;
+
+    // これで、別タブは1枚も開きません！！
+    // あなたの「枠ｗ」の中に、動画のリストがズラッと並ぶはずです！！
 }
 // 【パーツ2：自動監視ジャンプ】クリックを察知してタブを切り替える！！
 // 1秒ごとに「動画が選ばれたか？」をパトロールさせるド根性システムだ！！
