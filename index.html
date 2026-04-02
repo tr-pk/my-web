@@ -73,16 +73,17 @@
         document.getElementById('tab-p').classList.toggle('active', type === 'p');
     }
 
-    // ✅ 【修正版】検索しても勝手に飛ばない、賢い検索機能！！
+    // ✅ 【修正版】エンターで検索するが、タブは切り替えない！！
     function runSearch() {
         const q = document.getElementById('query').value.trim();
         if (!q) return;
         const player = document.getElementById('main-player');
         
-        // 1枚のタブの中に「検索結果リスト」をドヤ顔で表示させる！！
+        // 1. 検索結果をiframeに流し込む（これだけで検索は実行されるｗ）
         player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(q)}&origin=${window.location.origin}`;
         
-        // ここで switchTab('p') を呼ばないのが「1ミリの妥協もない正解ｗ」だ！！
+        // ❌ 【重要】ここにあった switchTab('p'); を完全に消去！！
+        // これを消せば、エンターを押しても「検索タブｗ」のままリストが表示されます！！
     }
 
     // ✅ 【深夜のパトロール隊ｗ】動画がクリックされた瞬間を検知して自動ジャンプ！！
