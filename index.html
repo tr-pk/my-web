@@ -5,15 +5,15 @@
     <title>3号機 - SIMPLE ONE BOARD</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* 1ミリの妥協もない漆黒のデザインｗ */
+        /* 1ミリの妥協もない黒のデザイン*/
         body { background: #000; color: #fff; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* 検索エリア：常に一番上ｗ */
+        /* 検索エリア：常に一番上*/
         .search-bar { padding: 15px; background: #1a1a1a; display: flex; gap: 10px; border-bottom: 1px solid #333; }
         input#query { flex: 1; padding: 12px; background: #333; border: none; color: #fff; border-radius: 5px; font-size: 16px; }
         button { background: #f00; border: none; color: #fff; padding: 0 20px; border-radius: 5px; cursor: pointer; }
 
-        /* メインエリア：検索結果も動画もここに全部出す！！ｗ */
+        /* メインエリア：検索結果も動画もここに全部出す！！ */
         #main-view { flex: 1; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
     </style>
@@ -37,13 +37,12 @@
 
         const player = document.getElementById('player');
         
-        // 🚀 【これが真の解決策だ！！】
+        //  【これが真の解決策だ！！】
         // embed（埋め込み専用）ではなく、YouTubeの「検索結果（results）」ページを直接呼ぶ！！
-        // これで、あなたのThinkPadに候補がズラッと並びます！！ｗ
         player.src = `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`;
     }
 
-    // 起動時に軽くフォーカスを合わせるｗ
+    // 起動時に軽くフォーカスを合わせる
     window.onload = () => { document.getElementById('query').focus(); };
 </script>
 
