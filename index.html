@@ -27,7 +27,10 @@
     </style>
 </head>
 <body>
-
+<button id="theme-toggle" onclick="toggleTheme()" 
+    style="position: fixed; top: 10px; right: 10px; z-index: 10000; border-radius: 40px; cursor: pointer; padding: 10px 15px; background: #333; color: white; border: 1px solid #555;">
+    🌓 モード切替
+</button>
     <div id="auth-overlay">
         <div class="auth-box">
             <h2>🔒 アクセス認証</h2>
@@ -72,6 +75,29 @@
             const response = await fetch(url);
             const data = await response.json();
             displayVideos(data.items);
+            function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById('theme-toggle');
+
+    // 「今の色」を判定して反転させる
+    if (body.classList.contains('light-mode')) {
+        // 【闇モード（初期状態）へ】
+        body.classList.remove('light-mode');
+        body.style.backgroundColor = "#0f0f0f";
+        body.style.color = "white";
+        btn.innerText = "☀️ ライトモードへ";
+        btn.style.background = "#333";
+        btn.style.color = "white";
+    } else {
+        // 【光モードへ】
+        body.classList.add('light-mode');
+        body.style.backgroundColor = "white";
+        body.style.color = "#0f0f0f";
+        btn.innerText = "🌙 ダークモードへ";
+        btn.style.background = "#eee";
+        btn.style.color = "#333";
+    }
+}
         }
 
         function displayVideos(videos) {
