@@ -78,11 +78,14 @@
             function toggleTheme() {
     const body = document.body;
     const btn = document.getElementById('theme-toggle');
-
-
 }
-        }
-            // 「今の色」を判定して反転させる
+        // --- ここからモード切替 ---
+function toggleTheme() {
+    const body = document.body;
+    const btn = document.getElementById('theme-toggle');
+
+    if (!body || !btn) return; // 念のための安全策
+
     if (body.classList.contains('light-mode')) {
         // 【闇モード（初期状態）へ】
         body.classList.remove('light-mode');
@@ -100,7 +103,7 @@
         btn.style.background = "#eee";
         btn.style.color = "#333";
     }
-
+} 
         function displayVideos(videos) {
             const grid = document.getElementById('video-grid');
             grid.innerHTML = '';
