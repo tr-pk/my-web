@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite YouTube Clone - Internal Player</title>
+    <title>youtube clone</title>
     <style>
         body { background-color: #0f0f0f; color: white; font-family: Roboto, Arial, sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; }
         #auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f0f0f; display: flex; justify-content: center; align-items: center; z-index: 2000; }
@@ -55,15 +55,20 @@
         const API_KEY ='AIzaSyCfwer55eBILdt86ZOiG3EA1c9aHwU-3yA';
 
         function checkPass() {
-            if (document.getElementById('pass-input').value === '1213') {
-                document.getElementById('auth-overlay').style.display = 'none';
-            }
-        }
+    const input = document.getElementById('pass-input').value;
+    if (input === '1213') {
+        document.getElementById('auth-overlay').style.display = 'none';
+    } else {
+        //「システムエラー」を装う
+        alert("404 Not Found\n要求されたリソースは、このサーバーで見つかりませんでした。");
+        document.getElementById('pass-input').value = ''; 
+    }
+}
 
         async function searchVideos() {
             const query = document.getElementById('search-query').value;
             if (!query) return;
-            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=12&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`;
             const response = await fetch(url);
             const data = await response.json();
             displayVideos(data.items);
