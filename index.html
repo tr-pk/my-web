@@ -125,7 +125,7 @@ function toggleTheme() {
         function playVideo(videoId) {
             const container = document.getElementById('player-container');
             const player = document.getElementById('main-player');
-            player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
             container.style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
